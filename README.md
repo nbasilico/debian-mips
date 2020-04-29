@@ -44,8 +44,8 @@ qemu-system-mips
 	-hda hda.img \ # the hd image we just created
 	-kernel vmlinux-4.19.0-8-4kc-malta \ # the image of the kernel
 	-initrd initrd.gz \ # the initial ram disk, contains the debian installer
-	-append "console=ttyS0 nokaslr" \ # we'll need a console, we don't need address space layout randomization
 	-nographic # we don't need GUIs
+	-append "console=ttyS0 nokaslr" \ # we'll need a console, we don't need address space layout randomization	
 ```
 
 The Debian installer should start and should download various packages.
@@ -65,7 +65,7 @@ sudo mount /dev/nbd0p1 /mnt # mount the boot partition under /mnt so we can acce
 cp -r /mnt/boot/initrd.img-4.9.0-6-4kc-malta .  # the inird from the boot partition to the working directory (check version!)
 # #cp -r /mnt/boot .                               # copy the entire boot folder this can also be done check!
 sudo umount /mnt # unmount the partition
-sudo qemu-nbd -d /dev/nbd0 # detactch the nbd device
+sudo qemu-nbd -d /dev/nbd0 # detatch the nbd device
 
 ```
 
@@ -78,15 +78,15 @@ qemu-system-mips
 	-hda hda.img \
 	-kernel vmlinux-4.19.0-8-4kc-malta \
 	-initrd initrd.img-4.19.0-8-4kc-malta \ # this is the new initrd!
+	-nographic \
 	-append "root=/dev/sda1 console=ttyS0 nokaslr" \ # appending also the main disk now
-  	-nographic \
-  	-redir tcp:5555::22 # local port 5555 will map to port 22 on the virtual machine
+  	-redir tcp:10022::22 # local port 5555 will map to port 22 on the virtual machine
 ```
 
 Debian should boot and we should see the command prompt. Let's open another shell and ssh to the machine:
 
 ```bash
-ssh mips1@localhost -p 5555
+ssh mips1@localhost -p 10022
 ```
 
 Upon login we will be presented with our freshly instaled Debian! Let's take care of some basic stuff that will come handy:
