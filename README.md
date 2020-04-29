@@ -37,7 +37,7 @@ qemu-img create -f qcow2 hda.img 4G
 
 Launch the installer
 
-```bash
+```sh
 qemu-system-mips 
 	-M malta \ # we are going to emulate a Malta MIPS board
 	-m 512 \ # our machine will have 512MB of RAM
