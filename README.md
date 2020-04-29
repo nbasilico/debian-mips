@@ -6,3 +6,9 @@ Nicola Basilico nicola.basilico@unimi.it, Jacopo Essenziale jacopo.essenziale@un
 
 
 
+## Scope of this tutorial
+
+A great number of Computer Architecture courses adopts the MIPS architecture as a subject of study due to its simplicity. Many of such courses have lab sessions that involve Assembly programming. So do we at the University of Milan. 
+
+Just like many of these lab courses around the world, we run our Assembly programs in a simulated environment using great tools like Spim or Mars.  From one side this tremendously simplifies the task of teaching Assembly. From the other side, a simulator is not the real thing.
+
