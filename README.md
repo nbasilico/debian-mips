@@ -12,6 +12,12 @@ Just like many of these lab courses around the world, we run our Assembly progra
 
 ## Install and configure Debian
 
+Install  [Qemu](https://www.qemu.org/) with `apt-get`:
+```bash
+sudo apt-get install -y qemu qemu-kvm libvirt-bin
+```
+More detailed informtion, also including a guide for other operating systems, are available at [this link](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU).
+
 Creating a work directory
 
 ```bash
@@ -105,6 +111,7 @@ Let's restart the machine and ssh to it just like we did before.
 
 ```bash
 # you might want to activate some aliases in your .bashrc
+sudo echo "I am (g)root" # test if sudo work
 sudo apt install vim # let's install our favorite text editor
 sudo apt install build-essential # installs gcc
 ```
