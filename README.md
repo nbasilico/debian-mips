@@ -26,7 +26,7 @@ mkdir debian-mips # you might choose any name you like ...
 cd debian-mips
 ```
 
-3. We shall perform a netboot of installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains out Debian installer. The kernel image is the one provided for the MIPS Malta board.
+3. We shall perform a netboot of installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board.
 
 ```bash
 # get the initrd
@@ -56,10 +56,10 @@ qemu-system-mips
 	-append "console=ttyS0 nokaslr" \ # we'll need a console, address space layout randomization will not be necessary	
 ```
 
-At this point the Debian installer should start and the installation on Debian should proceed on the virtual machine. A number of prompts will be presented:
+At this point the Debian installer should start and the installation of Debian should proceed on the virtual machine. A number of prompts will be presented:
 
 - don't install a desktop environment, but make sure to install the SSH server (we'll need it for remote access to the machine)
-- choose a root password and we create a user. Let us assume that we created a user named `mips1`
+- choose a root password and create a user. Let us assume that we created a user named `mips1`
 
 6. Once the installation is completed and we turn off the machine, we need to change the initrd before restarting everything otherwise the installer will be run again upon boot. The initrd we need is the one that the installation procedure created within the boot partition of our virtual disk image. We need to fetch that and use it in our launching script. To access the virtual disk image we shall use the NBD protocol, supported by qemu. The steps are as follows:
 
@@ -75,6 +75,9 @@ sudo qemu-nbd -d /dev/nbd0 # detatch the nbd device
 7. We are ready to prepare a script for starting the virtual machine, let's save it in a file called `start.sh` that we shall place in our working directory:
 
 ```bash
+#!/bin/bash
+
+# start.sh
 qemu-system-mips 
 	-M malta \
 	-m 512 \
@@ -86,7 +89,7 @@ qemu-system-mips
   	-redir tcp:10022::22 # local port 10022 will map to port 22 on the virtual machine
 ```
 
-8. Debian OS should boot and we should see the command prompt. Thanks to the port mapping we applied in the start sript, we can ssh to the machine:
+8. By running the above script, Debian OS should boot and we should see the command prompt. Thanks to the port mapping we applied in the script, we can ssh to the machine from a new local terminal:
 
 ```bash
 ssh mips1@localhost -p 10022
@@ -108,7 +111,7 @@ Let's restart the machine and ssh to it just like we did before.
 
 ```bash
 # you might want to activate some aliases in your .bashrc
-sudo echo "I am (g)root" # test if sudo work
+sudo echo "I am (g)root" # test if sudo works
 sudo apt install vim # let's install our favorite text editor
 sudo apt install build-essential # installs gcc
 ```
