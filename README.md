@@ -6,16 +6,16 @@ Nicola Basilico nicola.basilico@unimi.it, Jacopo Essenziale jacopo.essenziale@un
 
 ## Motivation and scope
 
-A great number of Computer Architecture courses adopt the MIPS architecture as a subject of study due to its simplicity and pragmatism. Such courses often include lab sessions where students are trained to develop Assembly programs. So do we in the course of Computer Architecture II at the University of Milan. Just like many of these lab courses around the world, we run our Assembly programs in a simulated environment using great tools like [Spim](http://spimsimulator.sourceforge.net/) or [Mars](http://courses.missouristate.edu/KenVollmar/MARS/). From one side, this approach tremendously simplifies the task of teaching Assembly to first-year students and is, undoubtedly, a lot of fun. On the other side, a simulator is not the real thing. The objective of this tutorial is to provide a step-by-step guide to setup a MIPS virtual machine and install Linux Debian on it. By doing so, we will enable the possibility to run Assembly sources without any fancy abstraction on the machine and by exploiting the development tools and library of a real operative systems.
+A great number of Computer Architecture courses adopt the MIPS architecture as a subject of study due to its simplicity and pragmatism. Such courses often include lab sessions where students are trained to develop Assembly programs. So do we in the course of Computer Architecture II at the University of Milan. Just like many of these lab courses around the world, we run our Assembly programs in a simulated environment using great tools like [Spim](http://spimsimulator.sourceforge.net/) or [Mars](http://courses.missouristate.edu/KenVollmar/MARS/). From one side, this approach tremendously simplifies the task of teaching Assembly to first-year students and is, undoubtedly, a lot of fun. On the other side, a simulator is not the real thing. The objective of this tutorial is to provide a step-by-step guide to setup a MIPS virtual machine and install Linux Debian on it. By doing so, we will enable the possibility to run Assembly sources without any fancy abstraction on the machine and by exploiting the development tools and library of a real operative system.
 
 The tutorial assumes to work on a Debian-based Linux distribution and requires basic bash skills.
 
 ## Install and configure Debian
 
-1. install [Qemu](https://www.qemu.org/) with `apt-get`:
+1. install [Qemu](https://www.qemu.org/) and the other dependencies with `apt`:
 
 ```bash
-sudo apt-get install -y qemu qemu-kvm libvirt-bin
+sudo apt install -y qemu qemu-system-mips wget
 ```
 More detailed information, also including a guide for other operating systems, are available at [this link](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU).
 
@@ -29,11 +29,8 @@ cd debian-mips
 3. We shall perform a netboot of installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board.
 
 ```bash
-# get the initrd
-wget http://ftp.debian.org/debian/dists/stable/main/installer-mips/current/images/malta/netboot/initrd.gz
-
-# get the kernel image
-wget http://ftp.debian.org/debian/dists/stable/main/installer-mips/current/images/malta/netboot/vmlinux-4.19.0-8-4kc-malta
+# download initrd and kernel image
+wget -r -np -nd -A 'initrd.gz' -A 'vmlinux-*-malta' http://ftp.debian.org/debian/dists/stable/main/installer-mips/current/images/malta/netboot/
 ```
 
 4. Create a virtual disk image to use for the installation. On this virtual disk we must ensure a minimum size of 1GB.
@@ -46,22 +43,30 @@ qemu-img create -f qcow2 hda.img 4G
 5. Boot the machine and make the installer being launched
 
 ```sh
-qemu-system-mips 
-	-M malta \ # we are going to emulate a Malta MIPS board
-	-m 512 \ # our machine will have 512MB of RAM
-	-hda hda.img \ # the disk image we just created
-	-kernel vmlinux-4.19.0-8-4kc-malta \ # the image of the kernel we just downloaded
-	-initrd initrd.gz \ # the initrd we just downloaded
-	-nographic # we don't need GUIs
-	-append "console=ttyS0 nokaslr" \ # we'll need a console, address space layout randomization will not be necessary	
+qemu-system-mips \
+	-M malta \
+	-m 512 \
+	-hda hda.img \
+	-kernel vmlinux-*-malta \
+	-initrd initrd.gz \
+	-nographic \
+	-append "console=ttyS0 nokaslr"
 ```
+Options explanation:
+- `-M malta`: we are going to emulate a Malta MIPS board
+- `-m 512`: our machine will have 512MB of RAM
+- `-hda hda.img`: the disk image we just created
+- `-kernel vmlinux-*-malta`: the image of the kernel we just downloaded
+- `-initrd initrd.gz`: the initrd we just downloaded
+- `-nographic`  we don't need guis
+- `-append "console=ttys0 nokaslr"`: we'll need a console, address space layout randomization will not be necessary	
 
-At this point the Debian installer should start and the installation of Debian should proceed on the virtual machine. A number of prompts will be presented:
+at this point the debian installer should start and the installation of debian should proceed on the virtual machine. a number of prompts will be presented:
 
-- don't install a desktop environment, but make sure to install the SSH server (we'll need it for remote access to the machine)
-- choose a root password and create a user. Let us assume that we created a user named `mips1`
+- don't install a desktop environment, but make sure to install the ssh server (we'll need it for remote access to the machine)
+- choose a root password and create a user. let us assume that we created a user named `mips1`
 
-6. Once the installation is completed and we turn off the machine, we need to change the initrd before restarting everything otherwise the installer will be run again upon boot. The initrd we need is the one that the installation procedure created within the boot partition of our virtual disk image. We need to fetch that and use it in our launching script. To access the virtual disk image we shall use the NBD protocol, supported by qemu. The steps are as follows:
+6. once the installation is completed and we turn off the machine, we need to change the initrd before restarting everything otherwise the installer will be run again upon boot. the initrd we need is the one that the installation procedure created within the boot partition of our virtual disk image. we need to fetch that and use it in our launching script. to access the virtual disk image we shall use the nbd protocol, supported by qemu. the steps are as follows:
 
 ```bash
 sudo modprobe nbd max_part=63 # enable the ndb module, set max partitions number to 63
@@ -72,22 +77,25 @@ sudo umount /mnt # unmount the partition
 sudo qemu-nbd -d /dev/nbd0 # detatch the nbd device
 ```
 
-7. We are ready to prepare a script for starting the virtual machine, let's save it in a file called `start.sh` that we shall place in our working directory:
+7. we are ready to prepare a script for starting the virtual machine, let's save it in a file called `start.sh` that we shall place in our working directory:
 
 ```bash
 #!/bin/bash
 
-# start.sh
-qemu-system-mips 
+qemu-system-mips \
 	-M malta \
 	-m 512 \
 	-hda hda.img \
-	-kernel vmlinux-4.19.0-8-4kc-malta \
-	-initrd initrd.img-4.19.0-8-4kc-malta \ # this is the new fetched initrd!
+	-kernel vmlinux-*-malta \
+	-initrd initrd.img-*-malta \
 	-nographic \
-	-append "root=/dev/sda1 console=ttyS0 nokaslr" \ # appending also the main disk now
-  	-redir tcp:10022::22 # local port 10022 will map to port 22 on the virtual machine
+	-append "root=/dev/sda1 console=ttyS0 nokaslr" \
+	-net user,hostfwd=tcp::10022-:22 \
+	-net nic
 ```
+- the `-initrd` option we now have the new fetched initrd
+- the `-append` option now includes the main disk
+- the last two options create a virtual network card to connect between host and guest and with the internet. It has the port 22, the ssh server default, mapped to the host's port 10022.
 
 8. By running the above script, Debian OS should boot and we should see the command prompt. Thanks to the port mapping we applied in the script, we can ssh to the machine from a new local terminal:
 
