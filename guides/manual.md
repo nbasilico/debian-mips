@@ -1,4 +1,5 @@
-:arrow_left: [back to README.md](README.md)
+:arrow_left: [back to README.md](../README.md)
+
 
 # Guide to the manual
 After [installing Debian MIPS] you're probably wondering where to look for while researching syscalls and Linux assembly programming in general. Here's what you need to know.
@@ -58,4 +59,5 @@ Section `3` of the manual contains information about library functions: for exam
 In section `3` you can also find an overview of the features included in a header file, for example `stdio(3)`, or info about special symbols, such as `stdin(3)`.
 
 
-:top: [get_back_to_top](#Guide-to-the-manual)
+
+:top: [get back to top](#Guide-to-the-manual)

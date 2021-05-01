@@ -13,9 +13,9 @@ A great number of Computer Architecture courses adopt the MIPS architecture as a
 
 
 ## Guides
-- [Debian installation in a Qemu MIPS VM](install.md)
-- [What to look for in the manual](manual.md)
-- [Linux MIPS assembly quick-start](quick-start.md)
+- [Debian installation in a Qemu MIPS VM](guides/install.md)
+- [What to look for in the manual](guides/manual.md)
+- [Linux MIPS assembly quick-start](guides/quick-start.md)
 
 ### Other
 - [Todo](todo.md)

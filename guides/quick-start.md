@@ -1,4 +1,5 @@
-:arrow_left: [back to README.md](README.md)
+:arrow_left: [back to README.md](../README.md)
+
 
 # Linux MIPS assembly quick-start
 After [installing](install.md), you are probably wondering where to start to compile and run an assembly program. Since you've installed an entire Linux distribution, you can potentially do whatever you like with it, including using an assembler and a linker of your choice. However, we'll use `as` and `ld`. Here are the steps to assemble, link and run an assembly program.
@@ -94,4 +95,5 @@ Make will automatically assemble and link your program, making the `hello` execu
 Make is a complex software that can automate many parts of your workflow. For example, you often see `clean` or `install` rules in makefiles. While in some environments and with some languages Make may be considered obsolete or not fitting, it is the perfect tool for assembling and linking assembly projects like these. However, it is not the purpose of this guide to teach you how to use Make extensively; we highly suggest to consult the manual (`man make`) and look in the internet for useful examples.
 
 
-:top: [get_back_to_top](#Linux-MIPS-assembly-quick-start)
+
+:top: [get back to top](#Linux-MIPS-assembly-quick-start)

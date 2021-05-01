@@ -1,4 +1,5 @@
-:arrow_left: [back to README.md](README.md)
+:arrow_left: [back to README.md](../README.md)
+
 
 # Install Debian on a Qemu MIPS VM
 In this guide we see how to install Debian on a Qemu MIPS virtual machine. The tutorial assumes to work on a Debian-based Linux distribution (though it's really easy do adapt to others) and requires basic shell skills.
@@ -115,11 +116,11 @@ sudo apt install build-essential # installs various compiling tools including gc
 ```
 
 ## Create a shared directory
-This section is completely optional and lets you set up a shared directory between your host and the MIPS VM usiung the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Among other benefits, a mapped directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a phisical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's easier generally to just do it in the VM.
+This section is completely optional and lets you set up a shared directory between your host and the MIPS VM by mounting a [9p filesystem](http://9p.cat-v.org/) using the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Doing this is actually surprisingly simple and can be done with only a couple of tweaks. Among other benefits, a shared directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a phisical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's easier generally to just do it in the VM.
 
-An in-depth guide to the 9p protocol on Qemu is available in the [official documentation page](https://wiki.qemu.org/Documentation/9psetup).
+An in-depth guide to virtual filesystems using 9p on Qemu is available in the [official documentation page](https://wiki.qemu.org/Documentation/9psetup).
 
-You can setup a 9p directory sharing between host and guest by simply adding this option to the `start.sh` script Qemu command:
+You can setup a 9p directory sharing between host and guest by simply appending this option to the `start.sh` script Qemu command:
 ```sh
 -virtfs local,path=<path/to/directory>,mount_tag=<tag>,security_model=mapped-xattr
 ```
@@ -127,17 +128,21 @@ Where `<path/to/directory>` the relative or absolute path to the shared director
 
 Once booted the VM, you can mount the shared directory similarly to what you would do with a normal volume:
 ```sh
-mount -t 9p -o trans=virtio,version=9p2000.L,msize=512000 <tag> <mountpoint>
+mount -t 9p -o trans=virtio,version=9p2000.L,msize=50000    <tag> <mountpoint>
 ```
 
 Or by adding the following entry to `/etc/fstab`, which will automatically mount the drive at boot time.
 ```fstab
-<tag>   <mountpoint>   9p   trans=virtio,version=9p2000.L,_netdev,msize=512000   0 0
+<tag>   <mountpoint>   9p   trans=virtio,version=9p2000.L,_netdev,msize=50000   0 0
 ```
 
 Note that `msize` should be set depending on the phisical drive on which the shared directory resides, as described in [the documentation](https://wiki.qemu.org/Documentation/9psetup#msize).
 
-In the fstab entry, the `_netdev` option specifies that the guest must wait for the network libraries to load before attempting to mount the drive. This is necessary since the 9p libraries aren't loaded right away. While this is by far the easiest solution, you could also compile the initrd so that these libraries are instantly loaded, as described in [this Superuser answer](https://superuser.com/a/536352), and then replace the old initrd with the new one in `start.sh`.
+
+### Notes
+- The `version` parameter specifies, as you might have guessed, the version of the protocol (if omitted, the version is `9P2000.u`). More information on the version can be found in the [documentation](https://github.com/chaos/diod/blob/master/protocol.md) of the implementation Diod and its bibliography.
+- In the fstab entry, the `_netdev` option specifies that the guest must wait for the network libraries to load before attempting to mount the drive. This is necessary since the 9p libraries aren't loaded right away. While this is by far the easiest solution, you could also compile the initrd so that these libraries are instantly loaded, as described in [this Superuser answer](https://superuser.com/a/536352), and then replace the old initrd with the new one in `start.sh`.
 
 
-:top: [get_back_to_top](#Install-Debian-on-a-Qemu-MIPS-VM)
+
+:top: [get back to top](#Install-Debian-on-a-Qemu-MIPS-VM)
