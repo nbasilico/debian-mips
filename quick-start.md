@@ -20,7 +20,7 @@ In the following example we see what you generally need to do from coding your p
 
 
 ### Code
-The first step is obviously writing your program. You can use whatever editor you like, but it's probably faster to use one accessible via terminal, since our VM lacks in performance and in a GUI (although, you could tecnically use a GUI with ssh X11 forwarding or VNC), for example vim, emacs or the simpler nano, pico, ne, etc.
+The first step is obviously writing your program. You can use whatever editor you like, but it's probably faster to use one accessible via terminal, since our VM lacks in performance and in a GUI (although, you could tecnically use a GUI with ssh X11 forwarding or VNC), for example vim, emacs or the simpler nano, pico, ne, etc. Alternatively you can edit on your host and transfer the code in any way, including [directory sharing](install.md#Create-a-shared-directory) which works with ease.
 
 While programming you'll probably use syscalls or the C library. In [this guide](manual.md) we teach you where to find what you're looking for in the manual.
 
@@ -92,3 +92,6 @@ make
 Make will automatically assemble and link your program, making the `hello` executable. If you didn't make changes, or if you changed only some of the source code files, make will know what to rebuild and only do that.
 
 Make is a complex software that can automate many parts of your workflow. For example, you often see `clean` or `install` rules in makefiles. While in some environments and with some languages Make may be considered obsolete or not fitting, it is the perfect tool for assembling and linking assembly projects like these. However, it is not the purpose of this guide to teach you how to use Make extensively; we highly suggest to consult the manual (`man make`) and look in the internet for useful examples.
+
+
+:top: [get_back_to_top](#Linux-MIPS-assembly-quick-start)

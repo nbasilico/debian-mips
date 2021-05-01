@@ -13,6 +13,7 @@ Be sure of consulting the manual from the emulated system, since the pages may d
 ## Table of contents
 - [Table of useful man pages](#Table-of-useful-man-pages)
 - [Syscalls](#Syscalls)
+- [Library functions](#Library-functions)
 
 
 ## Table of useful man pages
@@ -57,4 +58,4 @@ Section `3` of the manual contains information about library functions: for exam
 In section `3` you can also find an overview of the features included in a header file, for example `stdio(3)`, or info about special symbols, such as `stdin(3)`.
 
 
-:top: [get_back_to_top](#Install-Debian-on-a-Qemu-MIPS-VM)
+:top: [get_back_to_top](#Guide-to-the-manual)
