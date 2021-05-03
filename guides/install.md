@@ -56,7 +56,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    - `-kernel vmlinux-*-malta`: kernel: the image of the kernel we just downloaded
    - `-initrd initrd.gz`: initrd: the initrd we just downloaded
    - `-nographic` we don't need guis
-   - `-append "console=ttys0 nokaslr"`: additional kernel parameters: we'll need a console, address space layout randomization will not be necessary   
+   - `-append "console=ttys0 nokaslr"`: additional kernel parameters: we'll need a console, address space layout randomization will not be necessary
 
 6. Proceed with the installation. At this point the debian installer should start and the installation of debian should proceed on the virtual machine. A number of prompts will be presented:
    - don't install a desktop environment, but make sure to install the ssh server (we'll need it for remote access to the machine)
@@ -104,7 +104,7 @@ Upon login we will be presented with our freshly installed Debian, let's take ca
 
 ```sh
 su                      # become root
-apt install sudo        # install sudo    
+apt install sudo        # install sudo
 usermod -aG sudo mips1  # add user mips1 to the sudoers group
 ```
 
