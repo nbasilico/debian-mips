@@ -69,7 +69,7 @@ To link your code, that is, to make it an executable file `hello` where each cal
 ld hello.o
 ```
 
-If your program includes multiple object files (assembled by multiple `.asm`s), link them all by passing them as arguments to `ld`. If you need to link other libraries, for example the C library, see `ld --help` (or `man ld`) for a list of flags. More information of using the C library in assembly is included in [this guide](clib.md).
+If your program includes multiple object files (assembled by multiple `.asm`s), link them all by passing them as arguments to `ld`. If you need to link other libraries, for example the C library, see `ld --help` (or `man ld`) for a list of flags. More information of using the C library in assembly is included in [this guide](libc.md).
 
 
 ### Run
@@ -83,7 +83,11 @@ As you would do with any executable file, just use:
 ## Not obvious concepts
 In this section we cover the system/assembler/linker specific concepts not covered by obvious manual pages and different from emulators like SPIM and MARS. We assume using `as` as assembler and `ld` as linker.
 
-Some of these features differ if you link the C library initializers `/lib/ld.so.1 /usr/lib/mips-linux-gnu/crt*.o`. These cases will be specified in the subsections "With C initializers".
+Some of these features differ if you link the C library initializers `/usr/lib/mips-linux-gnu/crt*.o`. These cases will be specified in the subsections "With C initializers". You can dynamically link the initializers with:
+```
+ld -o <target> <object files> /usr/lib/mips-linux-gnu/crt*.o -dynamic-linker /lib/ld.so.1
+```
+More information on using the C library in assembly in [this guide](libc.md).
 
 
 ### Entry points
