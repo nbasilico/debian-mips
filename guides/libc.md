@@ -1,12 +1,5 @@
 :arrow_left: [back to README.md](../README.md)
 
-# WIP
-This guide is a Work In Progress.
-
-#### TODO
-- [ ] how structs work
-- [ ] C compiling steps (`gcc -S`)
-
 # libc in assembly
 This guide will teach you how to call C library functions from assembly.
 
@@ -16,7 +9,7 @@ This guide will teach you how to call C library functions from assembly.
 - [Link the C library](#Link-the-C-library)
 - [Calling a function from the standard library](#Calling-a-function-from-the-standard-library)
 - [Calling a written C function](#Calling-a-written-C-function)
-- [Extra: compile C step by step](#Extra:-compile-C-step-by-step)
+- [Extra - compile C step by step](#Extra---compile-C-step-by-step)
 
 
 
@@ -56,5 +49,24 @@ The same considerations of using standard library functions about the arguments 
 
 
 
-## Extra: compile C step by step
-...
+## Extra - compile C step by step
+In this section you'll learn how to generate an assembly file from a C file, and then building the executable from the assembly source. Doing this will let you see with your eyes the assembly that a compiler produces, which, while being way more complex than you'd write yourself, is a great opportunity to learn how C and assembly work.
+
+A classic `gcc` C compilation (`gcc foo.c`) is composed by a few steps:
+- preprocessing: elaborate preprocessor directives (the ones starting with `#`)
+- compiling: build assembly code from C code
+- assembling: create an object file from the assembly code
+- linking: link the object file(s) to build an executable
+
+As you might have noticed, the last two steps are common to our assembly code workflow. In fact, you can tell `gcc` to stop after the first two steps and do the remaining two yourself as follows:
+- `gcc -S foo.c` will produce an assembly file `foo.s`
+- `as -o foo.o foo.s` will produce an object file `foo.o`
+- `ld hello.o -o hello -dynamic-linker /lib/ld.so.1 /usr/lib/mips-linux-gnu/crt*.o -lc` will link the object file(s) with the C library and build a working executable
+
+Of course, you could even assemble and/or link with different assemblers/linkers.
+
+The file `foo.s` is written in the same assembly language you write your programs with, so you could easily learn something from it!
+
+
+#### TODO
+- [ ] how structs work
