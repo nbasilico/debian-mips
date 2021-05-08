@@ -14,9 +14,9 @@ After [installing](install.md), you are probably wondering where to start to com
 	- [Run](#Run)
 - [Not obvious concepts](#Not-obvious-concepts)
 	- [Entry points](#Entry-points)
-		- [With C initializers](#With-C-initializers)
+		- [With C initializers](#Entry-points-with-C-initializers)
 	- [Command line arguments](#Command-line-arguments)
-		- [With C initializers](#With-C-initializers)
+		- [With C initializers](#Arguments-with-C-initializers)
 - [Makefiles](#Makefiles)
 	- [A somewhat universal assembly makefile](#A-somewhat-universal-assembly-makefile)
 
@@ -83,7 +83,7 @@ As you would do with any executable file, just use:
 ## Not obvious concepts
 In this section we cover the system/assembler/linker specific concepts not covered by obvious manual pages and different from emulators like SPIM and MARS. We assume using `as` as assembler and `ld` as linker.
 
-Some of these features differ if you link the C library initializers `/usr/lib/mips-linux-gnu/crt*.o`. These cases will be specified in the subsections "With C initializers". You can dynamically link the initializers with:
+Some of these features differ if you link the C library initializers `/usr/lib/mips-linux-gnu/crt*.o`. These cases will be specified in the specific subsections. You can dynamically link the initializers with:
 ```
 ld -o <target> <object files> /usr/lib/mips-linux-gnu/crt*.o -dynamic-linker /lib/ld.so.1
 ```
@@ -93,7 +93,7 @@ More information on using the C library in assembly in [this guide](libc.md).
 ### Entry points
 As shown in the example, linking an object file with `ld` will look for an entry point labeled `__start`. Your program must start at the global (`.globl`) tag `__start` and it must end with an `exit` syscall as this segment will be the root of the call stack. Technically omitting `__start` will let `ld` start at a default address, although it will show a warning and should be avoided.
 
-#### With C initializers
+#### Entry points with C initializers
 The C library initializers contain a `__start` tag which contains initialization features, including jumping at the tag `main`. If you want to make use of said features link the object files and start your program at the `main` tag. Since your main is not the root of the call stack (it is in fact a callee), remember to terminate it with `jr $ra` and not by using the `exit` syscall.
 
 
@@ -107,7 +107,7 @@ The Linux loader will put command line arguments on the top of the stack as foll
 
 Obviously you will need to check the number of arguments before popping elements from the stack. Don't forget to update `$sp` or your program will suffer from a (small) memory leak.
 
-#### With C initializers
+#### Arguments with C initializers
 The C initialization procedure provides `argc` and `argv`, which have the same meaning and work exactly like they would in C (and in SPIM), `argc` being the number of command line tokens (including the program name) and `argv` being the (pointer to an) array of said tokens. In your `main`, `argc` will be loaded in register `$a0` and `argv` in `$a1`. Do not use the stack method if you link the C initializers and viceversa.
 
 

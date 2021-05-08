@@ -11,6 +11,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
 - [Create the startup script](#Create-the-startup-script)
 - [Post installation](#Post-installation)
 - [Create a shared directory](#Create-a-shared-directory)
+	- [Notes on 9pfs](#Notes-on-9pfs)
 
 
 ## Dependencies and preparation
@@ -139,7 +140,7 @@ Or by adding the following entry to `/etc/fstab`, which will automatically mount
 Note that `msize` should be set depending on the phisical drive on which the shared directory resides, as described in [the documentation](https://wiki.qemu.org/Documentation/9psetup#msize).
 
 
-### Notes
+### Notes on 9pfs
 - The `version` parameter specifies, as you might have guessed, the version of the protocol (if omitted, the version is `9P2000.u`). More information on the version can be found in the [documentation](https://github.com/chaos/diod/blob/master/protocol.md) of the implementation Diod and its bibliography.
 - In the fstab entry, the `_netdev` option specifies that the guest must wait for the network libraries to load before attempting to mount the drive. This is necessary since the 9p libraries aren't loaded right away. While this is by far the easiest solution, you could also compile the initrd so that these libraries are instantly loaded, as described in [this Superuser answer](https://superuser.com/a/536352), and then replace the old initrd with the new one in `start.sh`.
 
