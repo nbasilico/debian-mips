@@ -4,7 +4,7 @@
 # Guide to the manual
 After [installing Debian MIPS] you're probably wondering where to look for while researching syscalls and Linux assembly programming in general. Here's what you need to know.
 
-Be sure of consulting the manual from the emulated system, since the pages may differ from your host os/architecture. We assume you are using a Debian MIPS installation like the one obtained by following our [installation guide], however, most of the guide is easily adaptable to any architecture.
+Be sure of consulting the manual from the emulated system, since the pages may differ from your host OS/architecture. We assume you are using a Debian MIPS installation like the one obtained by following our [installation guide], however, most of the guide is easily adaptable to any architecture.
 
 [installation guide]: install.md
 [installing Debian MIPS]: install.md
@@ -22,7 +22,7 @@ Use:
 ```
 man <section> <name>
 ```
-Page `name` of section `section` is referred to as `name(section)`. See `man man` for an in-depth explaination.
+Page `name` of section `section` is referred to as `name(section)`. See `man man` for an in-depth explanation.
 
 |   Name   | Section |               Description                 |
 |:--------:|:-------:|:-----------------------------------------:|
@@ -36,7 +36,7 @@ Note that the description matches our use-case. Some of the listed pages may con
 
 
 ## Syscalls
-Section `2` of the manual contains information about system calls. `intro(2)` is an introduction to Linux syscalls. `syscalls(2)` lists all existing Linux syscalls. While with high level languages you tipically use wrapper functions (C wrapper functions in particular), more or less directly, in assembly you can just use the syscall itself.
+Section `2` of the manual contains information about system calls. `intro(2)` is an introduction to Linux syscalls. `syscalls(2)` lists all existing Linux syscalls. While with high level languages you typically use wrapper functions (C wrapper functions in particular), more or less directly, in assembly you can just use the syscall itself.
 
 A syscall's arguments are documented in its C wrapper function's man page. For example, `write(2)` contains information about the `write` syscall in the form of a C function signature:
 

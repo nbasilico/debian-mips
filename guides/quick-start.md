@@ -27,7 +27,7 @@ In the following example we see what you generally need to do from coding your p
 
 
 ### Code
-The first step is obviously writing your program. You can use whatever editor you like, but it's probably faster to use one accessible via terminal, since our VM lacks in performance and in a GUI (although, you could tecnically use a GUI with ssh X11 forwarding or VNC), for example vim, emacs or the simpler nano, pico, ne, etc. Alternatively you can edit on your host and transfer the code in any way, including [directory sharing](install.md#Create-a-shared-directory) which works with ease.
+The first step is obviously writing your program. You can use whatever editor you like, but it's probably faster to use one accessible via terminal, since our VM lacks in performance and in a GUI (although, you could technically use a GUI with ssh X11 forwarding or VNC). Vim, emacs or the simpler nano, pico, ne, etc. are good examples. Alternatively you can edit on your host and transfer the code in any way, including [directory sharing](install.md#Create-a-shared-directory) which works with ease.
 
 While programming you'll probably use syscalls or the C library. In [this guide](manual.md) we teach you where to find what you're looking for in the manual.
 
@@ -51,7 +51,7 @@ __start:
 	syscall
 ```
 
-Something you may not recognise from using an emulator like MARS or SPIM is the label `__start`. This label is required at linking time by `ld` and sets the starting point of the program.
+Something you may not recognize from using an emulator like MARS or SPIM is the label `__start`. This label is required at linking time by `ld` and sets the starting point of the program.
 
 We used `1` as the first argument for the `write` syscall as it is the conventional file descriptor for the `stdout` stream (see `stdin(3)`).
 
@@ -81,7 +81,7 @@ As you would do with any executable file, just use:
 
 
 ## Not obvious concepts
-In this section we cover the system/assembler/linker specific concepts not covered by obvious manual pages and different from emulators like SPIM and MARS. We assume using `as` as assembler and `ld` as linker.
+In this section we cover some system/assembler/linker specific concepts which you might not learn by simply reading manual pages, and which are different from emulators like SPIM and MARS. We assume using `as` as assembler and `ld` as linker.
 
 Some of these features differ if you link the C library initializers `/usr/lib/mips-linux-gnu/crt*.o`. These cases will be specified in the specific subsections. You can dynamically link the initializers with:
 ```
@@ -91,7 +91,7 @@ More information on using the C library in assembly in [this guide](libc.md).
 
 
 ### Entry points
-As shown in the example, linking an object file with `ld` will look for an entry point labeled `__start`. Your program must start at the global (`.globl`) tag `__start` and it must end with an `exit` syscall as this segment will be the root of the call stack. Technically omitting `__start` will let `ld` start at a default address, although it will show a warning and should be avoided.
+As shown in the example, linking an object file with `ld` will look for an entry point labeled `__start`. Your program must start at the global (`.globl`) tag `__start` and it must end with an `exit` syscall as this segment will be the root of the call stack. Technically, omitting `__start` will let `ld` start at a default address, although it will show a warning and should be avoided.
 
 #### Entry points with C initializers
 The C library initializers contain a `__start` tag which contains initialization features, including jumping at the tag `main`. If you want to make use of said features link the object files and start your program at the `main` tag. Since your main is not the root of the call stack (it is in fact a callee), remember to terminate it with `jr $ra` and not by using the `exit` syscall.
@@ -100,7 +100,7 @@ The C library initializers contain a `__start` tag which contains initialization
 ### Command line arguments
 The Linux loader will put command line arguments on the top of the stack as follows:
 - the top of the stack (initial `$sp`) will contain the number of arguments the program was executed with, including the command itself (similarly to C's `argc`);
-- the second word to the top of the stack (initial `$sp`+ 4) will contain the address of the first command line token, which is the command the program was executed with (saved as ascii string);
+- the second word to the top of the stack (initial `$sp`+ 4) will contain the address of the first command line token, which is the command the program was executed with (saved as ASCII string);
 - the third element of the stack (initial `$sp`+ 8) will contain the first argument in the same format;
 - the fourth element of the stack (initial `$sp`+ 12) will contain the second argument;
 - ...and so on;
@@ -108,7 +108,7 @@ The Linux loader will put command line arguments on the top of the stack as foll
 Obviously you will need to check the number of arguments before popping elements from the stack. Don't forget to update `$sp` or your program will suffer from a (small) memory leak.
 
 #### Arguments with C initializers
-The C initialization procedure provides `argc` and `argv`, which have the same meaning and work exactly like they would in C (and in SPIM), `argc` being the number of command line tokens (including the program name) and `argv` being the (pointer to an) array of said tokens. In your `main`, `argc` will be loaded in register `$a0` and `argv` in `$a1`. Do not use the stack method if you link the C initializers and viceversa.
+The C initialization procedure provides `argc` and `argv`, which have the same meaning and work exactly like they would in C (and in SPIM), `argc` being the number of command line tokens (including the program name) and `argv` being the (pointer to an) array of said tokens. In your `main`, `argc` will be loaded in register `$a0` and `argv` in `$a1`. Do not use the stack method if you link the C initializers and vice versa.
 
 
 

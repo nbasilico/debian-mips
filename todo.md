@@ -2,7 +2,7 @@
 
 
 # TODO
-This file groups our plannings for this repo. The things we'd like to add to the guide are grouped in the following sections.
+This file groups our plans for this repo. The things we'd like to add to the guide are grouped in the following sections.
 
 ## Guides
 - [ ] Installation using libvirt (if possible)

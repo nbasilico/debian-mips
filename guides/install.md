@@ -56,15 +56,15 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    - `-hda hda.img`: disk: the disk image we just created
    - `-kernel vmlinux-*-malta`: kernel: the image of the kernel we just downloaded
    - `-initrd initrd.gz`: initrd: the initrd we just downloaded
-   - `-nographic` we don't need guis
+   - `-nographic` we don't need GUIs
    - `-append "console=ttys0 nokaslr"`: additional kernel parameters: we'll need a console, address space layout randomization will not be necessary
 
-6. Proceed with the installation. At this point the debian installer should start and the installation of debian should proceed on the virtual machine. A number of prompts will be presented:
+6. Proceed with the installation. At this point the Debian installer should start and the installation of Debian should proceed on the virtual machine. A number of prompts will be presented:
    - don't install a desktop environment, but make sure to install the ssh server (we'll need it for remote access to the machine)
    - choose a root password and create a user. Let us assume that we created a user named `mips1`
 
 ## Update the initrd
-7. Once the installation is completed and we turn off the machine, we need to change the initrd before restarting everything otherwise the installer will be run again upon boot. The initrd we need is the one that the installation procedure created within the boot partition of our virtual disk image. We need to fetch that and use it in our launching script. To access the virtual disk image we shall use the nbd protocol, supported by Qemu. the steps are as follows:
+7. Once the installation is completed and we turn off the machine, we need to change the initrd before restarting everything otherwise the installer will be run again upon boot. The initrd we need is the one that the installation procedure created within the boot partition of our virtual disk image. We need to fetch that and use it in our launching script. To access the virtual disk image we shall use the [NBD](https://en.wikipedia.org/wiki/Network_block_device) protocol, supported by Qemu. The steps are as follows:
    ```sh
    sudo modprobe nbd max_part=63         # enable the ndb kernel module on the host, set max partitions number to 63
    sudo qemu-nbd -c /dev/nbd0 hda.img    # export the virtual disk to a nbd device in our local file system
@@ -117,7 +117,7 @@ sudo apt install build-essential # installs various compiling tools including gc
 ```
 
 ## Create a shared directory
-This section is completely optional and lets you set up a shared directory between your host and the MIPS VM by mounting a [9p filesystem](http://9p.cat-v.org/) using the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Doing this is actually surprisingly simple and can be done with only a couple of tweaks. Among other benefits, a shared directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a phisical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's easier generally to just do it in the VM.
+This section is completely optional and lets you set up a shared directory between your host and the MIPS VM by mounting a [9p filesystem](http://9p.cat-v.org/) using the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Doing this is actually surprisingly simple and can be done with only a couple of tweaks. Among other benefits, a shared directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a physical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's easier generally to just do it in the VM.
 
 An in-depth guide to virtual filesystems using 9p on Qemu is available in the [official documentation page](https://wiki.qemu.org/Documentation/9psetup).
 
@@ -137,7 +137,7 @@ Or by adding the following entry to `/etc/fstab`, which will automatically mount
 <tag>   <mountpoint>   9p   trans=virtio,version=9p2000.L,_netdev,msize=50000   0 0
 ```
 
-Note that `msize` should be set depending on the phisical drive on which the shared directory resides, as described in [the documentation](https://wiki.qemu.org/Documentation/9psetup#msize).
+Note that `msize` should be set depending on the physical drive on which the shared directory resides, as described in [the documentation](https://wiki.qemu.org/Documentation/9psetup#msize).
 
 
 ### Notes on 9pfs
