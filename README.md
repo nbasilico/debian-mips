@@ -17,6 +17,7 @@ A great number of Computer Architecture courses adopt the MIPS architecture as a
 - [What to look for in the manual](guides/manual.md)
 - [Linux MIPS assembly quick-start](guides/quick-start.md)
 - [Using the C library in assembly](guides/libc.md)
+- [Crossbuild for MIPS on your system](guides/crossbuild.md)
 
 ### Other
 - [Useful tools](tools.md)
