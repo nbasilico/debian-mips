@@ -20,5 +20,6 @@ A great number of Computer Architecture courses adopt the MIPS architecture as a
 - [Crossbuild for MIPS on your system](guides/crossbuild.md)
 
 ### Other
-- [Useful tools](tools.md)
+- [Resources](resources.md)
 - [Todo](todo.md)
+- [Useful tools](tools.md)
