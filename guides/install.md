@@ -69,7 +69,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    sudo modprobe nbd max_part=63         # enable the ndb kernel module on the host, set max partitions number to 63
    sudo qemu-nbd -c /dev/nbd0 hda.img    # export the virtual disk to a nbd device in our local file system
    sudo mount /dev/nbd0p1 /mnt           # mount the disk's boot partition under /mnt so we can access it
-   cp -r /mnt/boot/initrd.img-*-malta .  # copy the initrd from the boot partition into the working directory
+   cp /mnt/boot/initrd.img-*-malta ./    # copy the initrd from the boot partition into the working directory
    sudo umount /mnt                      # unmount the partition
    sudo qemu-nbd -d /dev/nbd0            # detatch the nbd device
    ```
@@ -143,6 +143,7 @@ Note that `msize` should be set depending on the physical drive on which the sha
 ### Notes on 9pfs
 - The `version` parameter specifies, as you might have guessed, the version of the protocol (if omitted, the version is `9P2000.u`). More information on the version can be found in the [documentation](https://github.com/chaos/diod/blob/master/protocol.md) of the implementation Diod and its bibliography.
 - In the fstab entry, the `_netdev` option specifies that the guest must wait for the network libraries to load before attempting to mount the drive. This is necessary since the 9p libraries aren't loaded right away. While this is by far the easiest solution, you could also compile the initrd so that these libraries are instantly loaded, as described in [this Superuser answer](https://superuser.com/a/536352), and then replace the old initrd with the new one in `start.sh`.
+- You might get the error "Socket operation on non socket" when trying to run executables on the shared volume. More detail [here](https://superuser.com/q/1664049/1025605).
 
 
 

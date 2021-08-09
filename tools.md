@@ -9,3 +9,8 @@
 | ltrace     | ltrace              | trace library calls |
 | ldd        | glibc-bin           | show shared objects |
 | gdb        | gdb                 | debugger            |
+| nm         | ?                   | show symbols        |
+
+
+
+:top: [get back to top](#Tools)

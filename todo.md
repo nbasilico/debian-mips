@@ -7,6 +7,7 @@ This file groups our plans for this repo. The things we'd like to add to the gui
 ## Guides
 - [ ] Installation using libvirt (if possible)
 - [ ] Some cool tools (quick-start of the tools from the table)
+- [x] Cross building
 - [x] Guide to assembly programming (assembly quick-start, commands to use, makefiles)
 - [x] Guide to the manual
 - [x] Installation annex: setup a 9p directory mapping between host and guest
@@ -15,9 +16,14 @@ This file groups our plans for this repo. The things we'd like to add to the gui
 
 ## Material
 - [ ] MARS (SPIM?) syscall conversion chart
-- [ ] assembly code examples
 - [ ] missing syscalls as procedures
+- [ ] resources page
+- [x] assembly code examples (see [Linux-MIPS-utils](github.com/SimpoLab/Linux-MIPS-utils))
 - [x] tools table
 
 ## Exercises
 ...
+
+
+
+:top: [get back to top](#TODO)
