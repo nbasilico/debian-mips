@@ -1,7 +1,7 @@
 :arrow_left: [back to README.md](../README.md)
 
 
-# Guide to the manual
+# The manual and syscalls
 After [installing Debian MIPS] you're probably wondering where to look for while researching syscalls and Linux assembly programming in general. Here's what you need to know.
 
 Be sure of consulting the manual from the emulated system, since the pages may differ from your host OS/architecture. We assume you are using a Debian MIPS installation like the one obtained by following our [installation guide], however, most of the guide is easily adaptable to any architecture.

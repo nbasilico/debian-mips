@@ -27,7 +27,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    cd debian-mips
    ```
 
-3. We shall perform a netboot of installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board.
+3. We shall perform a netboot based installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board. We'll use the mipsel architecture (i.e. little endian MIPS, which has a bit more extensive support), but you may choose any other on your discretion.
    ```sh
    # download initrd and kernel image
    wget -r -np -nd -A 'initrd.gz' -A 'vmlinu?-*-malta' 'http://ftp.debian.org/debian/dists/testing/main/installer-mipsel/current/images/malta/netboot/'
@@ -40,13 +40,13 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    ```
 
 ## Debian installation
-5. Boot the machine and make the installer being launched
+5. Boot the machine and launch the installer
    ```sh
-   qemu-system-mips \
+   qemu-system-mipsel \
       -M malta \
       -m 512 \
       -hda hda.img \
-      -kernel vmlinux-*-malta \
+      -kernel vmlinu?-*-malta \
       -initrd initrd.gz \
       -nographic \
       -append "console=ttyS0 nokaslr"
@@ -117,7 +117,7 @@ sudo apt install build-essential # installs various compiling tools including gc
 ```
 
 ## Create a shared directory
-This section is completely optional and lets you set up a shared directory between your host and the MIPS VM by mounting a [9p filesystem](http://9p.cat-v.org/) using the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Doing this is actually surprisingly simple and can be done with only a couple of tweaks. Among other benefits, a shared directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a physical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's easier generally to just do it in the VM.
+This section is completely optional and lets you set up a shared directory between your host and the MIPS VM by mounting a [9p filesystem](http://9p.cat-v.org/) using the [9p network protocol](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs#9P_protocol). Doing this is actually surprisingly simple and can be done with only a couple of tweaks. Among other benefits, a shared directory allows to code using your preferred editor and configuration (including GUI applications which are hard to use on a VM of this kind) and to do so while having bare-metal performance and still being able to access the edited files from within the VM. Obviously, you'll have to run your final product on the VM since you're programming in MIPS assembly (unless you're using a physical MIPS machine, in which case this guide is completely pointless to you). In theory, you could also compile and link your code from the host machine, but doing so would require setting up assembler and linker to build something for a MIPS architecture and it's generally easier to just do it in the VM.
 
 An in-depth guide to virtual filesystems using 9p on Qemu is available in the [official documentation page](https://wiki.qemu.org/Documentation/9psetup).
 
@@ -143,7 +143,7 @@ Note that `msize` should be set depending on the physical drive on which the sha
 ### Notes on 9pfs
 - The `version` parameter specifies, as you might have guessed, the version of the protocol (if omitted, the version is `9P2000.u`). More information on the version can be found in the [documentation](https://github.com/chaos/diod/blob/master/protocol.md) of the implementation Diod and its bibliography.
 - In the fstab entry, the `_netdev` option specifies that the guest must wait for the network libraries to load before attempting to mount the drive. This is necessary since the 9p libraries aren't loaded right away. While this is by far the easiest solution, you could also compile the initrd so that these libraries are instantly loaded, as described in [this Superuser answer](https://superuser.com/a/536352), and then replace the old initrd with the new one in `start.sh`.
-- You might get the error "Socket operation on non socket" when trying to run executables on the shared volume. More detail [here](https://superuser.com/q/1664049/1025605).
+- You might get the error "Socket operation on non socket" when trying to run executables on the shared volume. More detail [here](../meta/9pfs-error.md).
 
 
 

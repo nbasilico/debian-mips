@@ -4,6 +4,8 @@
 # Linux MIPS assembly quick-start
 After [installing](install.md), you are probably wondering where to start to compile and run an assembly program. Since you've installed an entire Linux distribution, you can potentially do whatever you like with it, including using an assembler and a linker of your choice. However, we'll use `as` and `ld`. Here are the steps to assemble, link and run an assembly program.
 
+We developed a few examples of programs and procedures which you can find [here](https://github.com/sgorblex-unimi/Linux-MIPS-utils).
+
 
 
 ## Table of contents
@@ -39,16 +41,16 @@ Let's say you wrote this hello world program, saved as `hello.asm`:
 .text
 
 .globl __start
-__start:
+__start:			# entry point
 	li $v0, 4004
 	li $a0, 1
 	la $a1, hello
 	li $a2, 14
-	syscall
+	syscall			# print "Hello, World!\n"
 
 	li $v0, 4001
 	li $a0, 0
-	syscall
+	syscall			# exit
 ```
 
 Something you may not recognize from using an emulator like MARS or SPIM is the label `__start`. This label is required at linking time by `ld` and sets the starting point of the program.
@@ -62,6 +64,8 @@ To assemble your code, that is, to make it an object file `hello.o`, you can use
 as hello.asm -o hello.o
 ```
 
+You may also produce [assembler listings](http://web.mit.edu/kolya/.f/root/net.mit.edu/athena.mit.edu/project/rhel-doc/3/rhel-devtools-en-3/s1-assembler-listings.html), which show information about the machine code and its relation with the higher level code.
+
 
 ### Link
 To link your code, that is, to make it an executable file `hello` where each call is linked with its related address, you can use `ld` as follows:
@@ -69,7 +73,7 @@ To link your code, that is, to make it an executable file `hello` where each cal
 ld hello.o -o hello
 ```
 
-If your program includes multiple object files (assembled by multiple `.asm`s), link them all by passing them as arguments to `ld`. If you need to link other libraries, for example the C library, see `ld --help` (or `man ld`) for a list of flags. More information of using the C library in assembly is included in [this guide](libc.md).
+If your program includes multiple object files (assembled by multiple `.asm`s), link them all by passing them as arguments to `ld`. If you need to link other libraries, for example the C library, see `ld --help` (or `man ld`) for a list of flags.
 
 
 ### Run
@@ -77,6 +81,8 @@ As you would do with any executable file, just use:
 ```
 ./hello
 ```
+
+Here you go! Make sure to check out our other, more significant [examples](https://github.com/sgorblex-unimi/Linux-MIPS-utils.md).
 
 
 
@@ -87,14 +93,14 @@ Some of these features differ if you link the C library initializers `/usr/lib/m
 ```
 ld -o <target> <object files> /usr/lib/mips-linux-gnu/crt*.o -dynamic-linker /lib/ld.so.1
 ```
-More information on using the C library in assembly in [this guide](libc.md).
+More information of using the C library in assembly is included in [this guide](libc.md).
 
 
 ### Entry points
 As shown in the example, linking an object file with `ld` will look for an entry point labeled `__start`. Your program must start at the global (`.globl`) tag `__start` and it must end with an `exit` syscall as this segment will be the root of the call stack. Technically, omitting `__start` will let `ld` start at a default address, although it will show a warning and should be avoided.
 
 #### Entry points with C initializers
-The C library initializers contain a `__start` tag which contains initialization features, including jumping at the tag `main`. If you want to make use of said features link the object files and start your program at the `main` tag. Since your main is not the root of the call stack (it is in fact a callee), remember to terminate it with `jr $ra` and not by using the `exit` syscall.
+The C library initializers contain a `__start` tag which contains initialization features, including jumping at the tag `main`. If you want to make use of said features link the object files and start your program at the `main` tag. Since your main is not the root of the call stack (it is in fact a callee), remember to terminate it with `jr $ra`, and not by using the `exit` syscall.
 
 
 ### Command line arguments

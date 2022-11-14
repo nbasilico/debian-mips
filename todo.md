@@ -5,6 +5,7 @@
 This file groups our plans for this repo. The things we'd like to add to the guide are grouped in the following sections.
 
 ## Guides
+- [ ] Guide to debugging tools (build a simulator-like workflow with software like gdb, radare/iaito, ghidra, etc.)
 - [ ] Installation using libvirt (if possible)
 - [ ] Some cool tools (quick-start of the tools from the table)
 - [x] Cross building
@@ -17,13 +18,15 @@ This file groups our plans for this repo. The things we'd like to add to the gui
 ## Material
 - [ ] MARS (SPIM?) syscall conversion chart
 - [ ] missing syscalls as procedures
-- [ ] resources page
-- [x] assembly code examples (see [Linux-MIPS-utils](github.com/SimpoLab/Linux-MIPS-utils))
+- [x] resources page
+- [x] assembly code examples (see [Linux-MIPS-utils](github.com/sgorblex-unimi/Linux-MIPS-utils))
 - [x] tools table
 
 ## Exercises
 ...
 
+## Misc
+- [ ] improve VM performance (memory and parallelism if possible)
 
 
 :top: [get back to top](#TODO)

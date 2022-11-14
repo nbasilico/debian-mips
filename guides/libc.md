@@ -25,7 +25,7 @@ Keep in mind that the order of the arguments is relevant when using `ld`.
 
 If you are willing link the C library with your program remember to use `main` as starting label and to `jr $ra` at the end.
 
-You may need to link non other C libraries, e.g. `-lm` for the math library and `-lrt` for the realtime library.
+You may need to link non other C libraries, e.g. `-lm` for the math library or `-lrt` for the realtime library.
 
 
 
@@ -35,10 +35,12 @@ Look for the desired function in the manual. Library functions reside in section
 The function signature shows what arguments have to be put in input to the function. These arguments correspond to the registers `$a0`, `$a1`, etc. as specified by MIPS assembly conventions (some of which described in `syscall(2)`). This works exactly like the syscalls in manual section 2: in fact, section 2 actually shows the C wrapping functions of the respective syscalls.
 
 In your code you'll have to:
-- Put the arguments in the right registers
+- put the arguments in the right registers
 - call the function as a normal assembly procedure (`jal printf`)
 
 and that's it! The linker will do the rest.
+
+Precise information about the standard way to pass arguments to C functions (and much more) is described in the [MIPS ABI](https://www.linux-mips.org/pub/linux/mips/doc/ABI/mipsabi.pdf) (Application Binary Interface) specification. For example, you may pass a `struct` to a C function by doing the same as you would do to pass each component of the struct.
 
 
 
@@ -66,10 +68,6 @@ As you might have noticed, the last two steps are common to our assembly code wo
 Of course, you could even assemble and/or link with different assemblers/linkers.
 
 The file `foo.s` is written in the same assembly language you write your programs with, so you could easily learn something from it!
-
-
-#### TODO
-- [ ] how structs work
 
 
 
