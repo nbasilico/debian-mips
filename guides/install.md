@@ -2,7 +2,7 @@
 
 
 # Install Debian on a Qemu MIPS VM
-In this guide we see how to install Debian on a Qemu MIPS virtual machine. The tutorial assumes to work on a Debian-based Linux distribution (though it's really easy do adapt to others) and requires basic shell skills.
+In this guide we see how to install Debian on a Qemu MIPS virtual machine. The tutorial assumes to work on a Debian-based Linux distribution (though it's really easy to adapt to others) and requires basic shell skills.
 
 ## Table of contents
 - [Dependencies and preparation](#Dependencies-and-preparation)
@@ -30,7 +30,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
 3. We shall perform a netboot of installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board.
    ```sh
    # download initrd and kernel image
-   wget -r -np -nd -A 'initrd.gz' -A 'vmlinux-*-malta' http://ftp.debian.org/debian/dists/stable/main/installer-mips/current/images/malta/netboot/
+   wget -r -np -nd -A 'initrd.gz' -A 'vmlinu?-*-malta' 'http://ftp.debian.org/debian/dists/testing/main/installer-mipsel/current/images/malta/netboot/'
    ```
 
 4. Create a virtual disk image to use for the installation. For the installation we must ensure a minimum size of about 1GB, but a bit more for our work won't hurt.
@@ -79,11 +79,11 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
    ```sh
    #!/bin/sh
 
-   qemu-system-mips \
+   qemu-system-mipsel \
       -M malta \
       -m 512 \
       -hda hda.img \
-      -kernel vmlinux-*-malta \
+      -kernel vmlinu?-*-malta \
       -initrd initrd.img-*-malta \
       -nographic \
       -append "root=/dev/sda1 console=ttyS0 nokaslr" \
@@ -106,7 +106,7 @@ Upon login we will be presented with our freshly installed Debian, let's take ca
 ```sh
 su                      # become root
 apt install sudo        # install sudo
-usermod -aG sudo mips1  # add user mips1 to the sudoers group
+/sbin/usermod -aG sudo mips1  # add user mips1 to the sudoers group
 ```
 
 After logging out and back in, we can use sudo to run commands with superuser rights:

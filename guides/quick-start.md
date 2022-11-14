@@ -66,7 +66,7 @@ as hello.asm -o hello.o
 ### Link
 To link your code, that is, to make it an executable file `hello` where each call is linked with its related address, you can use `ld` as follows:
 ```sh
-ld hello.o
+ld hello.o -o hello
 ```
 
 If your program includes multiple object files (assembled by multiple `.asm`s), link them all by passing them as arguments to `ld`. If you need to link other libraries, for example the C library, see `ld --help` (or `man ld`) for a list of flags. More information of using the C library in assembly is included in [this guide](libc.md).

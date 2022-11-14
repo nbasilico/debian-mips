@@ -9,6 +9,7 @@
 ## MIPS assembly learning resources
 - [Connecticut course](https://chortle.ccsu.edu/AssemblyTutorial/index.html)
 - [MIPS ABI](https://www.linux-mips.org/pub/linux/mips/doc/ABI/mipsabi.pdf)
+- [The MIPS ISA](https://www.mips.com/products/mips-isa)
 
 ## On memory allocation
 - [mmap and brk (video)](https://youtu.be/XV5sRaSVtXQ)
