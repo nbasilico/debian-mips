@@ -30,7 +30,7 @@ In this guide we see how to install Debian on a Qemu MIPS virtual machine. The t
 3. We shall perform a netboot based installation, so we need to get the initrd file and the kernel image. The initrd (initial RAM disk) will be used by the kernel as a root file system and, basically, contains our Debian installer. The kernel image is the one provided for the MIPS Malta board. We'll use the mipsel architecture (i.e. little endian MIPS, which has a bit more extensive support), but you may choose any other on your discretion.
    ```sh
    # download initrd and kernel image
-   wget -r -np -nd -A 'initrd.gz' -A 'vmlinu?-*-malta' 'http://ftp.debian.org/debian/dists/testing/main/installer-mipsel/current/images/malta/netboot/'
+   wget -r -np -nd -A 'initrd.gz' -A 'vmlinu?-*-malta' 'http://ftp.debian.org/debian/dists/stable/main/installer-mipsel/current/images/malta/netboot/'
    ```
 
 4. Create a virtual disk image to use for the installation. For the installation we must ensure a minimum size of about 1GB, but a bit more for our work won't hurt.
